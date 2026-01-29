@@ -1,35 +1,91 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Student from "./pages/examples/Student";
+import Student1 from "./pages/examples/Student1";
+import Student2 from "./pages/examples/Student2";
+import UserCard from "./pages/examples/practice/UserCard";
+import ProductList from "./pages/examples/practice/ProductList";
+import EngineeringTeam from "./pages/examples/practice/EngineeringTeam";
+import { useState } from "react";
+import LoginPage from "./pages/LoginPage";
 
-function App() {
-  const [count, setCount] = useState(0)
+
+function App(){
+  const [visible, setVisible] = useState(true);
+  const [showLogin, setShowLogin] = useState(false);
+  
+  const studentList = [
+    { rollNumber: 1, name: "Alice" },
+    { rollNumber: 2, name: "Bob" },
+    { rollNumber: 3, name: "Charlie" }
+  ];
+
+  const handleClick = () => {
+    setVisible(!visible);
+  };
+  const products = [
+    { id: 1, name: "Laptop", price: 89999, category: "Electronics" },
+    { id: 2, name: "Coffee Maker", price: 5049, category: "Home" },
+    { id: 3, name: "Smartphone", price: 68899, category: "Electronics" }
+  ];
+
+  const employees = [
+    { id: 101, name: "Alice", department: "Engineering", active: true },
+    { id: 102, name: "Bob", department: "Design", active: false },
+    { id: 103, name: "Charlie", department: "Engineering", active: true },
+    { id: 104, name: "David", department: "HR", active: true }
+  ];
+
+  // If login page is shown, display login page
+  if (showLogin) {
+    return <LoginPage onBackClick={() => setShowLogin(false)} />;
+  }
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+        {/* Login Button - Top Right Corner */}
+        <div style={{ position: "fixed", top: "20px", right: "20px", zIndex: 1000 }}>
+          <button 
+            className="btn btn-primary" 
+            onClick={() => setShowLogin(true)}
+          >
+            Login
+          </button>
+        </div>
+
+        <h1>Welcome to Expense App</h1>    
+        <Student />
+        <Student1 />
+        <Student1 name = "John" rollNumber = {20} />
+        <Student2 />
+ 
+        <h2>User Cards</h2>   
+        <UserCard name="Aman" age={28} location="Boston" isPremium={true} />
+        <UserCard name="Bob" age={35} location="Chennai" isPremium={false} />
+        <UserCard name="John" age={24} location="Singapore" isPremium={true} />
+
+        <ProductList products={products} />
+
+        <EngineeringTeam employees={employees} />
+
+        {/* Hide Student Section */}
+        <div>
+          <button onClick={handleClick}>Hide Student</button>
+
+          {visible && (
+            <>
+              {studentList.map((s) => (
+                <p key={s.rollNumber}>
+                  Roll Number: {s.rollNumber}
+                  <br/>
+                  Name: {s.name}
+                </p>
+              ))}
+            </>
+          )}
+        </div>
     </>
   )
 }
 
-export default App
+export default App;
+
+// app.jsx is parent level component
