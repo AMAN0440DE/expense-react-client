@@ -91,19 +91,29 @@
 // app.jsx is parent level component
 
 // import Containers from "react-bootsrap/Container";
-import { Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import AppLayout from "./components/AppLayout";
 
-function App(){
-    return (
-        <Routes>
-            <Route path="/" element={<Home />} />
-            <Route path="/login" element={<Login />} />
-        </Routes>
-    );
-
+function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <AppLayout>
+              <Home />
+            </AppLayout>
+          }
+        />
+        <Route path="/login" element={<Login />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
+
 export default App;
 
 // react router dom monitors the change in URL and whatever changes made it renders the same on browser
