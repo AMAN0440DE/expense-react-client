@@ -91,26 +91,110 @@
 // app.jsx is parent level component
 
 // import Containers from "react-bootsrap/Container";
-import { BrowserRouter, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
+// import { useState } from "react";
+
 import Home from "./pages/Home";
 import Login from "./pages/Login";
+import Dashboard from "./pages/Dashboard";
+import LayoutPage from "./pages/LayoutPage"; // create this page
 import AppLayout from "./components/AppLayout";
+import UserLayout from "./components/UserLayout";
+import Logout from "./pages/Logout";
+import { useEffect, useState} from "react";
+import axios from "axios";
 
 function App() {
+  const [userDetails, setUserDetails] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  const isUserLoggedIn = async () => {
+    try {
+      const response = await axios.post('http://localhost:5001/auth/is-user-logged-in',
+        {}, {withCredentials: true});
+      setUserDetails(response.data.user);
+    }catch (error) {
+      console.log(error);
+    }finally{
+      setLoading(false)
+    }
+  };
+  useEffect(() => {
+    isUserLoggedIn();
+  }, []);
+
+  if (loading) {
+    return (
+      <div className="container text-center mt-5">
+        <div className="spinner-border text-primary"></div>
+        <p>Verifying session...</p>
+      </div>
+    );
+  }
   return (
-    <BrowserRouter>
+
       <Routes>
         <Route
           path="/"
           element={
-            <AppLayout>
-              <Home />
-            </AppLayout>
+            userDetails ? (
+              <Navigate to="/dashboard" />
+            ) : (
+              <AppLayout>
+                <Home />
+              </AppLayout>
+            )
           }
         />
-        <Route path="/login" element={<Login />} />
+        <Route
+          path="/login"
+          element={
+            userDetails ? (
+              <Navigate to="/dashboard" />
+            ) : (
+              <AppLayout>
+                <Login setUser={setUserDetails} />
+              </AppLayout>
+            )
+          }
+        />
+        <Route
+          path="/dashboard"
+          element={
+            userDetails ? (
+              <UserLayout>
+                <Dashboard user={userDetails} />
+              </UserLayout>
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+        <Route
+          path="/layout"
+          element={
+            userDetails ? (
+              <UserLayout>
+                <LayoutPage />
+              </UserLayout>
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+        <Route
+          path="/logout"
+          element={
+            userDetails ? (
+              <Logout setUser={setUserDetails} />
+            ) : (
+              <Navigate to="/login" />
+            )
+          }
+        />
+        
       </Routes>
-    </BrowserRouter>
+   
   );
 }
 
