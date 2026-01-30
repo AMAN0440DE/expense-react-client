@@ -1,14 +1,24 @@
-import { Children } from "react";
-import Footer from "./Footer";
-import Header from "./Header";
+// Home.jsx
+// function Home() {
+//   return (
+//     <div className="container">
+//       <h3 className="text-center">Welcome to Expense App</h3>
+//     </div>
+//   );
+// }
+// export default Home;
 
-function AppLayout({ children}) {
-    return(
-        <>
-            <Header />
-            {Children}
-            <Footer />
-        </>
-    );
+import Header from "./UserHeader";
+import Footer from "./UserFooter";
+// AppLayout.jsx
+function AppLayout({ children }) {
+  return (
+    <>
+      <Header />
+      {children}
+      <Footer />
+    </>
+  );
 }
+
 export default AppLayout;
