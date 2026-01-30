@@ -103,6 +103,8 @@ import UserLayout from "./components/UserLayout";
 import Logout from "./pages/Logout";
 import { useEffect, useState} from "react";
 import axios from "axios";
+import Register from "./pages/Register";
+
 
 function App() {
   const [userDetails, setUserDetails] = useState(null);
@@ -192,6 +194,19 @@ function App() {
             )
           }
         />
+      <Route
+        path="/register"
+        element={
+          userDetails ? (
+            <Navigate to="/dashboard" />
+          ) : (
+            <AppLayout>
+              <Register setUser={setUserDetails} />
+            </AppLayout>
+          )
+        }
+      />
+
         
       </Routes>
    
