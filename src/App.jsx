@@ -11,7 +11,7 @@
 // function App(){
 //   const [visible, setVisible] = useState(true);
 //   const [showLogin, setShowLogin] = useState(false);
-  
+
 //   const studentList = [
 //     { rollNumber: 1, name: "Alice" },
 //     { rollNumber: 2, name: "Bob" },
@@ -56,7 +56,7 @@
 //         <Student1 />
 //         <Student1 name = "John" rollNumber = {20} />
 //         <Student2 />
- 
+
 //         <h2>User Cards</h2>   
 //         <UserCard name="Aman" age={28} location="Boston" isPremium={true} />
 //         <UserCard name="Bob" age={35} location="Chennai" isPremium={false} />
@@ -101,23 +101,38 @@ import LayoutPage from "./pages/LayoutPage"; // create this page
 import AppLayout from "./components/AppLayout";
 import UserLayout from "./components/UserLayout";
 import Logout from "./pages/Logout";
-import { useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 import axios from "axios";
 import Register from "./pages/Register";
+import { useSelector, useDispatch } from "react-redux";
+import { SET_USER } from "./redux/user/action";
 
 
 function App() {
-  const [userDetails, setUserDetails] = useState(null);
+  // const [userDetails, setUserDetails] = useState(null);
+  const userDetails = useSelector((state) => state.userDetails);
+  const dispatch = useDispatch();
+
+  const setUserDetails = (user) => {
+    dispatch({
+      type: SET_USER,
+      payload: user,
+    });
+  };
   const [loading, setLoading] = useState(true);
 
   const isUserLoggedIn = async () => {
     try {
       const response = await axios.post('http://localhost:5001/auth/is-user-logged-in',
-        {}, {withCredentials: true});
-      setUserDetails(response.data.user);
-    }catch (error) {
+        {}, { withCredentials: true });
+      // setUserDetails(response.data.user);
+      dispatch({
+        type: SET_USER,
+        payload: response.data.user
+      });
+    } catch (error) {
       console.log(error);
-    }finally{
+    } finally {
       setLoading(false)
     }
   };
@@ -135,65 +150,65 @@ function App() {
   }
   return (
 
-      <Routes>
-        <Route
-          path="/"
-          element={
-            userDetails ? (
-              <Navigate to="/dashboard" />
-            ) : (
-              <AppLayout>
-                <Home />
-              </AppLayout>
-            )
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            userDetails ? (
-              <Navigate to="/dashboard" />
-            ) : (
-              <AppLayout>
-                <Login setUser={setUserDetails} />
-              </AppLayout>
-            )
-          }
-        />
-        <Route
-          path="/dashboard"
-          element={
-            userDetails ? (
-              <UserLayout>
-                <Dashboard user={userDetails} />
-              </UserLayout>
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
-        <Route
-          path="/layout"
-          element={
-            userDetails ? (
-              <UserLayout>
-                <LayoutPage />
-              </UserLayout>
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
-        <Route
-          path="/logout"
-          element={
-            userDetails ? (
-              <Logout setUser={setUserDetails} />
-            ) : (
-              <Navigate to="/login" />
-            )
-          }
-        />
+    <Routes>
+      <Route
+        path="/"
+        element={
+          userDetails ? (
+            <Navigate to="/dashboard" />
+          ) : (
+            <AppLayout>
+              <Home />
+            </AppLayout>
+          )
+        }
+      />
+      <Route
+        path="/login"
+        element={
+          userDetails ? (
+            <Navigate to="/dashboard" />
+          ) : (
+            <AppLayout>
+              <Login setUser={setUserDetails} />
+            </AppLayout>
+          )
+        }
+      />
+      <Route
+        path="/dashboard"
+        element={
+          userDetails ? (
+            <UserLayout>
+              <Dashboard user={userDetails} />
+            </UserLayout>
+          ) : (
+            <Navigate to="/login" />
+          )
+        }
+      />
+      <Route
+        path="/layout"
+        element={
+          userDetails ? (
+            <UserLayout>
+              <LayoutPage />
+            </UserLayout>
+          ) : (
+            <Navigate to="/login" />
+          )
+        }
+      />
+      <Route
+        path="/logout"
+        element={
+          userDetails ? (
+            <Logout setUser={setUserDetails} />
+          ) : (
+            <Navigate to="/login" />
+          )
+        }
+      />
       <Route
         path="/register"
         element={
@@ -207,9 +222,9 @@ function App() {
         }
       />
 
-        
-      </Routes>
-   
+
+    </Routes>
+
   );
 }
 
