@@ -6,8 +6,8 @@ function UserHeader() {
     return (
         <nav className="navbar navbar-expand-lg bg-body-tertiary">
             <div className="container-fluid">
-                <Link className="navbar-brand" to="/dashboard">
-                    ExpenseApp
+                <Link className="navbar-brand" to="/">
+                    Expense App
                 </Link>
                 <button
                     aria-controls="navbarSupportedContent"
