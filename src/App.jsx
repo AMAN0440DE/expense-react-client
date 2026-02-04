@@ -106,6 +106,7 @@ import axios from "axios";
 import Register from "./pages/Register";
 import { useSelector, useDispatch } from "react-redux";
 import { SET_USER } from "./redux/user/action";
+import Groups from "./pages/Groups";
 
 
 function App() {
@@ -193,6 +194,18 @@ function App() {
           userDetails ? (
             <UserLayout>
               <LayoutPage />
+            </UserLayout>
+          ) : (
+            <Navigate to="/login" />
+          )
+        }
+      />
+      <Route
+        path="/groups"
+        element={
+          userDetails ? (
+            <UserLayout>
+              <Groups />
             </UserLayout>
           ) : (
             <Navigate to="/login" />
