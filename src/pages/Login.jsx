@@ -48,7 +48,7 @@
 //         };
 //         const config = { withCredentials: true }; // fixed typo
 //         const response = await axios.post("http://localhost:5001/auth/login", body, config);
-        
+
 //         console.log(response);
 //         setMessage("User authenticated");
 //       } catch (error) {
@@ -100,9 +100,10 @@
 
 import { useState } from "react";
 import axios from "axios";
-import {GoogleOAuthProvider, GoogleLogin} from '@react-oauth/google';
+import { Link } from "react-router-dom";
+import { GoogleOAuthProvider, GoogleLogin } from '@react-oauth/google';
 
-function Login({setUser}) {
+function Login({ setUser }) {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -153,7 +154,7 @@ function Login({setUser}) {
           body,
           config
         );
-        setUser(response.data.user); 
+        setUser(response.data.user);
 
         // console.log(response);
         // setMessage("User authenticated");
@@ -170,19 +171,19 @@ function Login({setUser}) {
 
   const handleGoogleSuccess = async (authResponse) => {
     // console.log(JSON.stringify(authResponse, null, 2));
-    try{
+    try {
       const body = {
         idToken: authResponse?.credential,
       };
       const response = await axios.post(
         "http://localhost:5001/auth/google-auth",
         body,
-        { withCredentials: true}
+        { withCredentials: true }
       );
       setUser(response.data.user);
-    }catch(error){
+    } catch (error) {
       console.log(error);
-      setErrors({message: 'Unable to process google sso, please try again'});
+      setErrors({ message: 'Unable to process google sso, please try again' });
     }
   };
   const handleGoogleFailure = (error) => {
@@ -230,14 +231,17 @@ function Login({setUser}) {
       </form>
       <div className="row justify-content-center">
         <div className="col-6">
-            <GoogleOAuthProvider 
+          <GoogleOAuthProvider
             clientId={import.meta.env.VITE_GOOGLE_CLIENT_ID}>
-                <GoogleLogin 
-                onSuccess={handleGoogleSuccess} 
-                onError={handleGoogleFailure}>
-                </GoogleLogin>
-            </GoogleOAuthProvider>
+            <GoogleLogin
+              onSuccess={handleGoogleSuccess}
+              onError={handleGoogleFailure}>
+            </GoogleLogin>
+          </GoogleOAuthProvider>
         </div>
+      </div>
+      <div className="mt-3 text-center">
+        <p>Don't have an account? <Link to="/register">Register</Link></p>
       </div>
     </div>
   );
