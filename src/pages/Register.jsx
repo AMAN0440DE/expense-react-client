@@ -36,7 +36,14 @@ function Register({ setUser }) {
       navigate("/dashboard");
 
     } catch (err) {
-      setError(err.response?.data?.message || "Registration failed");
+      // Check if we have specific validation errors
+      if (err.response?.data?.errors && Array.isArray(err.response.data.errors)) {
+        // Join all error messages or just show the first one
+        const validationMsg = err.response.data.errors.map(e => e.msg).join(', ');
+        setError(validationMsg);
+      } else {
+        setError(err.response?.data?.message || "Registration failed");
+      }
     }
   };
 
