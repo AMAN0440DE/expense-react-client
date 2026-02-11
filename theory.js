@@ -97,4 +97,27 @@ Changing value in React Redux store
 Reading the value from Store
 l. You useSeIeetor hook and subscribe to value change events
 2. useSeIeetor invoked every time there is change in corresponding value.
+
+
+
+
+///////////////////////PAGINATION
+used to render only some part of data and not complete data at once because user may not be able to see all at once
+say 1000groups in server then browser only loads 10 -12 groups at once and the rest when user needed like insta reels, 5 rells
+loaded instantly and when user scrolls it loads more
+
+cloud service providers only allows 10-12 mb of data limit to render on browser at once and if exceed that limit it will return 413 error code
+also more storage data means more ram it will take on user and if low end computer then will also slowsdown users computer
+
+applying PAGINATION on client side (all data stored in browser and then pagination to render what requuired) is of no use.
+
+///////////////////Promises
+it takes array of function and executes all at once
+await func1()
+await func2()
+
+normally when task 1 takes time we switch to task 2 sice await , but in promises task 1 and 2 will run parallely
+promises because it makes promise that at end you will get result complete
+it returns js object array of function results
+
  */
